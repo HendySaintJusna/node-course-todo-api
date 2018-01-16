@@ -7,6 +7,8 @@ var {Todo} = require('./models/todo');
 var {Users} = require ('./models/users');
 
 var app = express();
+//huroku
+//const post =process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 //POST
@@ -40,38 +42,63 @@ app.get('/todos', (req,res)=>{
 });
 
 //avoir information avec id de la database
-app.get('/todos/:id',(req, res)=>{
-  var id = req.params.id;
-    if(!ObjectID.isValid(id)){
-    	//res. =responde
-    	return res.status(404).send();
-    }
+// app.get('/todos/:id',(req, res)=>{
+//   var id = req.params.id;
+//     if(!ObjectID.isValid(id)){
+//     	//res. =responde
+//     	return res.status(404).send();
+//     }
 
-   Todo.findById(id).then((todo) =>{
+//    Todo.findById(id).then((todo) =>{
      
-     if(!todo){
-       return res.status(404).send();
-     }
+//      if(!todo){
+//        return res.status(404).send();
+//      }
 
-     res.send({todo});
+//      res.send({todo
+//      });
 
-   }).catch((e)=>{
-   	res.status(400).send();
-   });
+//    }).catch((e)=>{
+//    	res.status(400).send();
+//    });
+
+
+// });
+
+
+
+app.delete('/todos/:id', (req,res) =>{
+
+var id = req.params.id;
+
+if(!ObjectID.isValid(id)){   
+return res.status(404).send();
+}
+
+Todo.findByIdAndRemove(id).then((todo)=>{
+  if(!todo){
+  	return res.status(404).send();
+  }
+
+  res.send(todo);
+}).catch((e)=>{
+	res.status(400).send();
+});
+
+
+
 
 
 });
+
+
 
 
 
 app.listen(3000, () =>{
-   console.log('Started on port 3000');
+   console.log(`Connection au serveur port 3000`);
+
 });
-
-
-module.exports = {app};
-
-
 
 
 
