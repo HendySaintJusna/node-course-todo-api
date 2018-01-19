@@ -15,6 +15,7 @@ email:{
   unique:true,
   
   validate:{
+  	isAsync :true,
   	validator: validator.isEmail,
   	message:'{VALUE} is not a valid email'
   }
@@ -51,9 +52,9 @@ tokens: [{
 UserSchema.methods.generateAuthToken = function(){
 	var user = this;
 	var access = 'auth';
-	var token = jwt.sign({_id: user._id.toHexString(),access}, 'abc123').toSring();
+	var token = jwt.sign({_id: user._id.toHexString(),access}, 'abc123').toString();
 
-	user.tokens.push({access,token});
+	user.tokens = user.tokens.concat({access,token});
 
 	return user.save().then(() =>{
 		return token;
